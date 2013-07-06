@@ -437,6 +437,13 @@ LaunchShield( damage, meansOfDeath )
 	self.hasRiotShieldEquipped = false;
 }
 
+DeleteBodyParts(sHitloc, sWeapon)
+{
+	if(sHitLoc == "head")
+	{
+		self detach(self.headmodel);
+	}
+}
 
 PlayerKilled_internal( eInflictor, attacker, victim, iDamage, sMeansOfDeath, sWeapon, vDir, sHitLoc, psOffsetTime, deathAnimDuration, isFauxDeath )
 {
@@ -448,6 +455,7 @@ PlayerKilled_internal( eInflictor, attacker, victim, iDamage, sMeansOfDeath, sWe
 
 	assert( victim.sessionteam != "spectator" );
 
+	victim DeleteBodyParts(sHitLoc, sWeapon);
 	if ( isDefined( attacker ) )
 		attacker.assistedSuicide = undefined;
 
@@ -1097,6 +1105,16 @@ giveRecentShieldXP()
 	self.recentShieldXP = 0;
 }
 
+slowMovementForShortTime()
+{
+	self endon("disconnect");
+	self endon("death");
+	self.moveSpeedScaler = self.moveSpeedScaler - 0.4;
+	self maps\mp\gametypes\_weapons::updateMoveSpeedScale( "primary" );
+	wait 4;
+	self.moveSpeedScaler = self.moveSpeedScaler + 0.4;
+	self maps\mp\gametypes\_weapons::updateMoveSpeedScale( "primary" );
+}
 
 Callback_PlayerDamage_internal( eInflictor, eAttacker, victim, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, psOffsetTime )
 {
@@ -1105,7 +1123,6 @@ Callback_PlayerDamage_internal( eInflictor, eAttacker, victim, iDamage, iDFlags,
 	{
 		iDamage = 0;
 	}
-	
 	if ( !isReallyAlive( victim ) )
 		return;
 	
@@ -1114,7 +1131,17 @@ Callback_PlayerDamage_internal( eInflictor, eAttacker, victim, iDamage, iDFlags,
 	
 	if ( isDefined( level.hostMigrationTimer ) )
 		return;
-	
+	if(sMeansOfDeath == "MOD_MELEE" || sWeapon == "throwing_knife_mp")
+	{
+		if(sHitLoc == "left_leg_lower" || sHitLoc == "right_leg_lower" || sHitLoc == "left_leg_upper" || sHitLoc == "right_leg_upper" || sHitLoc == "left_arm_lower" || sHitLoc == "right_arm_lower" || sHitLoc == "left_arm_upper" || sHitLoc == "right_arm_upper")
+		{
+			iDamage = 50;
+		}
+	}
+	if(sHitLoc == "left_leg_lower" || sHitLoc == "right_leg_lower" || sHitLoc == "left_leg_upper" || sHitLoc == "right_leg_upper" || sHitLoc == "left_foot" || sHitLoc == "right_foot")
+	{
+		victim thread slowMovementForShortTime();
+	}
 	if ( sMeansOfDeath == "MOD_FALLING" )
 		victim thread emitFallDamage( iDamage );
 		
