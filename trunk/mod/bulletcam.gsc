@@ -1,6 +1,6 @@
 bulletcam( victim )
 {
-	distance = distance( self.origin, victim.origin )
+	distance = distance( self.origin, victim.origin );
 	
 	if( distance < 500 )
 	{
