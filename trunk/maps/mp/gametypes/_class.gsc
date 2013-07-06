@@ -254,7 +254,7 @@ cloneLoadout()
 		loadoutPerk2 = cac_getPerk( class_num, 2 );
 		loadoutPerk3 = cac_getPerk( class_num, 3 );
 		loadoutOffhand = cac_getOffhand( class_num );
-		loadoutDeathStreak = cac_getDeathstreak( class_num );
+		//loadoutDeathStreak = cac_getDeathstreak( class_num );
 	}
 	else
 	{
@@ -273,7 +273,7 @@ cloneLoadout()
 		loadoutPerk2 = table_getPerk( level.classTableName, class_num, 2 );
 		loadoutPerk3 = table_getPerk( level.classTableName, class_num, 3 );
 		loadoutOffhand = table_getOffhand( level.classTableName, class_num );
-		loadoutDeathstreak = table_getDeathstreak( level.classTableName, class_num );
+		//loadoutDeathStreak = table_getDeathstreak( level.classTableName, class_num );
 	}
 	
 	clonedLoadout["inUse"] = false;
@@ -325,7 +325,7 @@ giveLoadout( team, class, allowCopycat )
 		loadoutPerk2 = class["loadoutPerk2"];
 		loadoutPerk3 = class["loadoutPerk3"];
 		loadoutOffhand = class["loadoutOffhand"];
-		loadoutDeathStreak = class["loadoutDeathstreak"];
+		//loadoutDeathStreak = class["loadoutDeathstreak"];
 	}
 	else if ( isDefined( self.pers["copyCatLoadout"] ) && self.pers["copyCatLoadout"]["inUse"] && allowCopycat )
 	{
@@ -347,7 +347,7 @@ giveLoadout( team, class, allowCopycat )
 		loadoutPerk2 = clonedLoadout["loadoutPerk2"];
 		loadoutPerk3 = clonedLoadout["loadoutPerk3"];
 		loadoutOffhand = clonedLoadout["loadoutOffhand"];
-		loadoutDeathStreak = "specialty_copycat";		
+		//loadoutDeathStreak = "specialty_copycat";		
 	}
 	else if ( isSubstr( class, "custom" ) )
 	{
@@ -368,7 +368,7 @@ giveLoadout( team, class, allowCopycat )
 		loadoutPerk2 = cac_getPerk( class_num, 2 );
 		loadoutPerk3 = cac_getPerk( class_num, 3 );
 		loadoutOffhand = cac_getOffhand( class_num );
-		loadoutDeathStreak = cac_getDeathstreak( class_num );
+		//loadoutDeathStreak = cac_getDeathstreak( class_num );
 	}
 	else
 	{
@@ -389,7 +389,7 @@ giveLoadout( team, class, allowCopycat )
 		loadoutPerk2 = table_getPerk( level.classTableName, class_num, 2 );
 		loadoutPerk3 = table_getPerk( level.classTableName, class_num, 3 );
 		loadoutOffhand = table_getOffhand( level.classTableName, class_num );
-		loadoutDeathstreak = table_getDeathstreak( level.classTableName, class_num );
+		//loadoutDeathStreak = table_getDeathstreak( level.classTableName, class_num );
 	}
 
 	if ( isString( class ) && !(isDefined( self.pers["copyCatLoadout"] ) && self.pers["copyCatLoadout"]["inUse"] && allowCopycat) )
@@ -436,7 +436,7 @@ giveLoadout( team, class, allowCopycat )
 			loadoutOffhand = table_getOffhand( level.classTableName, 10 );
 		
 		if ( !isValidDeathstreak( loadoutDeathstreak ) || (isCustomClass && !self isItemUnlocked( loadoutDeathstreak )) )
-			loadoutDeathstreak = table_getDeathstreak( level.classTableName, 10 );
+			//loadoutDeathStreak = table_getDeathstreak( level.classTableName, 10 );
 	}
 
 	if ( loadoutPerk1 != "specialty_bling" )
