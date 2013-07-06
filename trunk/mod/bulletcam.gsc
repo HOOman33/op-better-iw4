@@ -2,7 +2,7 @@ bulletcam( victim )
 {
 	distance = distance( self.origin, victim.origin );
 	
-	if( distance < 500 )
+	if( distance > 500 )
 	{
 		// Im using hide() and actually moving the player ( after after taking their weapon ), as it provides a more seamless transition.
 		self hide();

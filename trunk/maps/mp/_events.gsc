@@ -157,10 +157,8 @@ killedPlayer( killId, victim, weapon, meansOfDeath, attacker )
 		if ( self.pers["cur_death_streak"] > 3 )
 			self comeBack( killId );
 			
-		if( isDefined( attacker.finalKill ) && attacker.finalKill )
+		if( int(game["teamScores"][attacker.team]) >= getDvarInt( "scr_" + getDvar( "g_gametype" ) + "_scorelimit" ) - maps\mp\gametypes\_rank::getScoreInfoValue( "kill" ) && getDvarInt( "scr_" + getDvar( "g_gametype" ) + "_scorelimit" ) != 0 )
 		{
-			//if( game["teamScores"][attacker.team] >= level.scorelimit - 100 )
-			//gameFlagInit( "bulletcam_used", true );
 			if( getWeaponClass(self getCurrentWeapon()) == "weapon_sniper" )
 				thread mod\bulletcam::bulletcam( victim );
 		}	

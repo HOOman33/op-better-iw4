@@ -175,6 +175,7 @@ onTimeLimit()
 setDvars()
 {
 	setDvar("jump_height", 78);
+	setDvar("jump_slowdownenable", 0 );
 	setDvar("bg_falldamagemaxheight", 9999);
 	setDvar("bg_falldamageminheight", 9998);
 	setDvar("g_gravity", 300);
