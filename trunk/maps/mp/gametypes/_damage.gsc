@@ -458,7 +458,7 @@ PlayerKilled_internal( eInflictor, attacker, victim, iDamage, sMeansOfDeath, sWe
 	victim DeleteBodyParts(sHitLoc, sWeapon);
 	if ( isDefined( attacker ) )
 		attacker.assistedSuicide = undefined;
-
+	
 	if ( !isDefined( victim.idFlags ) )
 	{
 		if ( sMeansOfDeath == "MOD_SUICIDE" )
@@ -642,6 +642,8 @@ PlayerKilled_internal( eInflictor, attacker, victim, iDamage, sMeansOfDeath, sWe
 
 	if ( isDefined( attacker ) )
 		attacker checkKillSteal( victim );
+	if( getBaseWeaponName( attacker getCurrentWeapon() ) == "gl" )
+		iDamage = iDamage * 0.75;
 	
 	// obituary
 	obituary( victim, attacker, sWeapon, sMeansOfDeath );
