@@ -1061,6 +1061,8 @@ isValidSecondary( refString )
 {
 	switch ( refString )
 	{
+		case "onemanarmy":
+			return false;
 		case "beretta":
 		case "usp":
 		case "deserteagle":
@@ -1080,7 +1082,6 @@ isValidSecondary( refString )
 		case "aa12":
 		case "m1014":
 		case "spas12":
-		case "onemanarmy":
 			return true;
 		default:
 			assertMsg( "Replacing invalid secondary weapon: " + refString );
@@ -1171,11 +1172,12 @@ isValidPerk1( refString )
 {
 	switch ( refString )
 	{
+		case "specialty_onemanarmy":
+			return false;
 		case "specialty_marathon":
 		case "specialty_fastreload":
 		case "specialty_scavenger":
 		case "specialty_bling":
-		case "specialty_onemanarmy":
 			return true;
 		default:
 			assertMsg( "Replacing invalid perk1: " + refString );
@@ -1187,11 +1189,12 @@ isValidPerk2( refString )
 {
 	switch ( refString )
 	{
+		case "specialty_explosivedamage":
+			return false;
 		case "specialty_bulletdamage":
 		case "specialty_lightweight":
 		case "specialty_hardline":
 		case "specialty_coldblooded":
-		case "specialty_explosivedamage":
 			return true;
 		default:
 			assertMsg( "Replacing invalid perk2: " + refString );
@@ -1204,6 +1207,7 @@ isValidPerk3( refString )
 	switch ( refString )
 	{
 		case "specialty_extendedmelee":
+			return false;
 		case "specialty_bulletaccuracy":
 		case "specialty_localjammer":
 		case "specialty_heartbreaker":
@@ -1224,7 +1228,7 @@ isValidDeathStreak( refString )
 		case "specialty_combathigh":
 		case "specialty_grenadepulldeath":
 		case "specialty_finalstand":
-			return true;
+			return false;
 		default:
 			assertMsg( "Replacing invalid death streak: " + refString );
 			return false;
