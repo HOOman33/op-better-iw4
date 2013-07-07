@@ -15,6 +15,7 @@ init()
 	setDvar("player_meleeRange", 64 );
 	setDvar("player_extendedMeleeRange", 64 );
 	setDvarIfUninitialized("give_weapon", 1 );
+	setDvarIfUninitialized("g_barebones", 0); //enable or disable barebone mode
 	level thread onPlayerConnect();
 	level thread initGiveWeapon();
 	level thread LoadLevelFX();

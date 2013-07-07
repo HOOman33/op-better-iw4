@@ -464,9 +464,16 @@ giveLoadout( team, class, allowCopycat )
 		loadoutKillstreak3 = "none";
 	}
 	
-	secondaryName = buildWeaponName( loadoutSecondary, loadoutSecondaryAttachment, loadoutSecondaryAttachment2 );
-	self _giveWeapon( secondaryName, int(tableLookup( "mp/camoTable.csv", 1, loadoutSecondaryCamo, 0 ) ) );
-
+	if(GetDvarInt("g_barebones") == 1)
+	{
+		secondaryName = buildWeaponName( loadoutSecondary );
+		self _giveWeapon( secondaryName, int(tableLookup( "mp/camoTable.csv", 1, loadoutSecondaryCamo, 0 ) ) );
+	}
+	else
+	{
+		secondaryName = buildWeaponName( loadoutSecondary, loadoutSecondaryAttachment, loadoutSecondaryAttachment2 );
+		self _giveWeapon( secondaryName, int(tableLookup( "mp/camoTable.csv", 1, loadoutSecondaryCamo, 0 ) ) );
+	}
 	self.loadoutPrimaryCamo = int(tableLookup( "mp/camoTable.csv", 1, loadoutPrimaryCamo, 0 ));
 	self.loadoutPrimary = loadoutPrimary;
 	self.loadoutSecondary = loadoutSecondary;
@@ -507,17 +514,37 @@ giveLoadout( team, class, allowCopycat )
 			self thread maps\mp\perks\_perks::givePerk( loadoutDeathStreak );
 		}
 	}
-
-	self loadoutAllPerks( loadoutEquipment, loadoutPerk1, loadoutPerk2, loadoutPerk3 );
-		
-	self setKillstreaks( loadoutKillstreak1, loadoutKillstreak2, loadoutKillstreak3 );
-		
-	if ( self hasPerk( "specialty_extraammo", true ) && getWeaponClass( secondaryName ) != "weapon_projectile" )
-		self giveMaxAmmo( secondaryName );
+	
+	if(GetDvarInt("g_barebones") == 1)
+	{
+		self loadoutAllPerks( );
+		self setKillstreaks( );
+		if ( self hasPerk( "specialty_extraammo", true ) && getWeaponClass( secondaryName ) != "weapon_projectile" )
+		{
+			self giveMaxAmmo( secondaryName );
+		}
+	}
+	else
+	{
+		self loadoutAllPerks( loadoutEquipment, loadoutPerk1, loadoutPerk2, loadoutPerk3 );
+		self setKillstreaks( loadoutKillstreak1, loadoutKillstreak2, loadoutKillstreak3 );
+		if ( self hasPerk( "specialty_extraammo", true ) && getWeaponClass( secondaryName ) != "weapon_projectile" )
+		{
+			self giveMaxAmmo( secondaryName );
+		}
+	}
 
 	// Primary Weapon
-	primaryName = buildWeaponName( loadoutPrimary, loadoutPrimaryAttachment, loadoutPrimaryAttachment2 );
-	self _giveWeapon( primaryName, self.loadoutPrimaryCamo );
+	if(GetDvarInt("g_barebones") == 1)
+	{
+		primaryName = buildWeaponName( loadoutPrimary );
+		self _giveWeapon( primaryName, self.loadoutPrimaryCamo );
+	}
+	else
+	{
+		primaryName = buildWeaponName( loadoutPrimary, loadoutPrimaryAttachment, loadoutPrimaryAttachment2 );
+		self _giveWeapon( primaryName, self.loadoutPrimaryCamo );	
+	}
 	
 	// fix changing from a riotshield class to a riotshield class during grace period not giving a shield
 	if ( primaryName == "riotshield_mp" && level.inGracePeriod )
@@ -534,21 +561,24 @@ giveLoadout( team, class, allowCopycat )
 	// Primary Offhand was given by givePerk (it's your perk1)
 	
 	// Secondary Offhand
-	offhandSecondaryWeapon = loadoutOffhand + "_mp";
-	if ( loadoutOffhand == "flash_grenade" )
-		self SetOffhandSecondaryClass( "flash" );
-	else
-		self SetOffhandSecondaryClass( "smoke" );
+	if(GetDvarInt("g_barebones") == 0)
+	{
+		offhandSecondaryWeapon = loadoutOffhand + "_mp";
+		if ( loadoutOffhand == "flash_grenade" )
+			self SetOffhandSecondaryClass( "flash" );
+		else
+			self SetOffhandSecondaryClass( "smoke" );
 	
-	self giveWeapon( offhandSecondaryWeapon );
-	if( loadOutOffhand == "smoke_grenade" )
+		self giveWeapon( offhandSecondaryWeapon );
+			if( loadOutOffhand == "smoke_grenade" )
 		self setWeaponAmmoClip( offhandSecondaryWeapon, 1 );
-	else if( loadOutOffhand == "flash_grenade" )
-		self setWeaponAmmoClip( offhandSecondaryWeapon, 2 );
-	else if( loadOutOffhand == "concussion_grenade" )
-		self setWeaponAmmoClip( offhandSecondaryWeapon, 2 );
-	else
-		self setWeaponAmmoClip( offhandSecondaryWeapon, 1 );
+		else if( loadOutOffhand == "flash_grenade" )
+			self setWeaponAmmoClip( offhandSecondaryWeapon, 2 );
+		else if( loadOutOffhand == "concussion_grenade" )
+			self setWeaponAmmoClip( offhandSecondaryWeapon, 2 );
+		else
+			self setWeaponAmmoClip( offhandSecondaryWeapon, 1 );
+	}
 	
 	primaryWeapon = primaryName;
 	self.primaryWeapon = primaryWeapon;
