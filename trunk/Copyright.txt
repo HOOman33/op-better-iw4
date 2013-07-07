@@ -1,0 +1,39 @@
+/****************************************************************************************************/
+/										         /
+/				Operation Better MW2				         /
+/			© 2013 DidUknowiPwn™ & Zombiefan564/[115]Death	 All Rights Reserved	         /
+/										         /
+/****************************************************************************************************/
+
+/----------------------------------------------------------------------------------------------------------------------------------------------/
+				Mod Information:
+1) Headshots take off players head.
+2) XP Hud has been modified.
+3) Knifing an enemies arm/leg/arms will deal 50 damage.
+4) Being shot in the legs will slow down movement for a certain time.
+5) Final killcam is a bulletcam only when the player that died was killed by a sniper rifle.
+6) Changed .44 Magnum to .45 Magnum
+7) Desert Eagle has somewhat similiar recoil like CoD 4.
+8) Removal of Last Stand and all Death Streaks (unlike Mr. Stealth Clown lying to us.)
+9) Nuke has better physics.
+10) Barrett .50 Cal does more damage on killstreaks.
+11) Add Defcon gamemode.
+12) Add One Flag Domination.
+13) Add Moon gamemode. (Basically Moon gravity and physics.)
+14) Add Barebones mode. (No perks, equipment, killstreaks, and no attachments.)
+15) Fix Global Thermonuclear War.
+
+/----------------------------------------------------------------------------------------------------------------------------------------------/
+
+/==================================================================================/
+				Changelog
+Version 1.0: First release. (TBA)
+
+/==================================================================================/
+
+/#########################################################################################/
+/				Copyright						     /
+/	This mod is not to be edited, if there is any changes mode to code you will be penalized.		     /
+/	Do not copy any code that has been made in this mod except for: Puffiamo C4 and Clay Pickup code            /
+/		© 2013 DidUknowiPwn™ & Zombiefan564/[115]Death	 All Rights Reserved		     /							
+/#########################################################################################/
