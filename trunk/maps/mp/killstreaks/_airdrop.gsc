@@ -1,3 +1,5 @@
+// Cargoship fix by momo5502 :D
+
 #include maps\mp\_utility;
 #include common_scripts\utility;
 #include maps\mp\gametypes\_hud_util;
@@ -255,7 +257,6 @@ tryUseAirdrop( lifeId, kID, dropType )
 	{
 		return false;
 	}
-	
 	if ( dropType != "airdrop_mega" )
 	{
 		level.littleBirds++;
@@ -416,7 +417,7 @@ airDropMarkerActivate( dropType )
 	wait 0.05;
 	
 	if ( dropType != "airdrop_mega" )
-		level doFlyBy( owner, position, randomFloat( 360 ), dropType );
+		level doFlyBy( owner, position, randomFloat( 360 ), dropType);
 	else
 		level doC130FlyBy( owner, position, randomFloat( 360 ), dropType );
 }
@@ -654,7 +655,7 @@ setUsableOnceByTeam( team )
 }
 
 
-dropTheCrate( dropPoint, dropType, lbHeight, dropImmediately, crateOverride, startPos )
+dropTheCrate( dropPoint, dropType, lbHeight, dropImmediately, crateOverride, startPos, origin_shit )
 {
 	dropCrate = [];
 	self.owner endon ( "disconnect" );
@@ -670,7 +671,7 @@ dropTheCrate( dropPoint, dropType, lbHeight, dropImmediately, crateOverride, sta
 		dropCrate LinkTo( self, "tag_ground" , (64,32,-128) , (0,0,0) );
 	else
 		dropCrate LinkTo( self, "tag_ground" , (32,0,5) , (0,0,0) );
-
+	
 	dropCrate.angles = (0,0,0);
 	dropCrate show();
 	dropSpeed = self.veh_speed;
@@ -678,7 +679,18 @@ dropTheCrate( dropPoint, dropType, lbHeight, dropImmediately, crateOverride, sta
 	self waittill ( "drop_crate" );
 	
 	dropCrate Unlink();
-	dropCrate PhysicsLaunchServer( (0,0,0), (randomInt(5),randomInt(5),randomInt(5)) );		
+
+		
+	if( getdvar("mapname") == "so_bridge" )
+	{
+		if(!isDefined( origin_shit ))
+		origin_shit = ( 0, 0, 0 );
+		dropcrate thread checkCargoship( dropPoint, origin_shit);
+	}
+	
+	else
+		dropCrate PhysicsLaunchServer( (0,0,0), (randomInt(5),randomInt(5),randomInt(5)) );	
+		
 	dropCrate thread physicsWaiter( dropType, crateType );	
 }
 
@@ -781,6 +793,8 @@ getFlyHeightOffset( dropSite )
 	}
 	else
 	{
+	if(getdvar("mapname") == "so_bridge")
+	return heightEnt.origin[2] + 2000;
 		return heightEnt.origin[2];
 	}
 	
@@ -907,24 +921,24 @@ doC130FlyBy( owner, dropSite, dropYaw, dropType )
 		
 		wait ( .05 );	
 	}	
-	
+	zob = vector_multiply( anglestoforward( c130.angles ), randomfloatrange(100,200)  );
 	wait( 0.05 );
 	c130 thread dropTheCrate( dropSite, dropType, flyHeight, false, undefined , pathStart );
 	wait ( 0.05 );
 	c130 notify ( "drop_crate" );
 	wait ( 0.05 );
 
-	c130 thread dropTheCrate( dropSite, dropType, flyHeight, false, undefined , pathStart );
+	c130 thread dropTheCrate( dropSite, dropType, flyHeight, false, undefined , pathStart, zob );
 	wait ( 0.05 );
 	c130 notify ( "drop_crate" );
 	wait ( 0.05 );
 
-	c130 thread dropTheCrate( dropSite, dropType, flyHeight, false, undefined , pathStart );
+	c130 thread dropTheCrate( dropSite, dropType, flyHeight, false, undefined , pathStart, zob * 2 );
 	wait ( 0.05 );
 	c130 notify ( "drop_crate" );
 	wait ( 0.05 );
 
-	c130 thread dropTheCrate( dropSite, dropType, flyHeight, false, undefined , pathStart );
+	c130 thread dropTheCrate( dropSite, dropType, flyHeight, false, undefined , pathStart, zob * 3 );
 	wait ( 0.05 );
 	c130 notify ( "drop_crate" );
 
@@ -1569,4 +1583,14 @@ decrementLittleBirdCount()
 	level.littleBirds--;
 	
 	level.littleBirds = int( max( level.littleBirds, 0 ) );
+}
+
+checkCargoship( dropSite, num )
+{		
+//momo5502's code :) 
+	time = ( self.origin[2] - dropSite[2] ) / 600;
+	self moveto( dropSite + num + (0, 0, 14), time);
+	self RotateYaw( randomfloatrange(150,360), time);
+    wait time + 2.5;
+	self notify( "physics_finished" );
 }

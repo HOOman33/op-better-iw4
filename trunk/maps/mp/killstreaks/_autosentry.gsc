@@ -1,3 +1,5 @@
+// Cargoship fix by momo5502 :D
+
 #include maps\mp\_utility;
 #include maps\mp\gametypes\_hud_util;
 #include common_scripts\utility;
@@ -394,7 +396,10 @@ updateSentryPlacement( sentryGun )
 
 		sentryGun.origin = placement[ "origin" ];
 		sentryGun.angles = placement[ "angles" ];
-		sentryGun.canBePlaced = self isOnGround() && placement[ "result" ];
+		if(getdvar("mapname") == "so_bridge" )
+		sentryGun.canBePlaced = true; //Need to optimize the code ... a lot! :D
+		else
+			sentryGun.canBePlaced = self isOnGround() && placement[ "result" ];
 	
 		if ( sentryGun.canBePlaced != lastCanPlaceSentry )
 		{
