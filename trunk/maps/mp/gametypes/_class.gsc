@@ -496,25 +496,6 @@ giveLoadout( team, class, allowCopycat )
 	if ( level.dieHardMode )
 		self maps\mp\perks\_perks::givePerk( "specialty_pistoldeath" );
 	
-	// only give the deathstreak for the initial spawn for this life.
-	if ( loadoutDeathStreak != "specialty_null" && getTime() == self.spawnTime )
-	{
-		deathVal = int( tableLookup( "mp/perkTable.csv", 1, loadoutDeathStreak, 6 ) );
-				
-		if ( self getPerkUpgrade( loadoutPerk1 ) == "specialty_rollover" || self getPerkUpgrade( loadoutPerk2 ) == "specialty_rollover" || self getPerkUpgrade( loadoutPerk3 ) == "specialty_rollover" )
-			deathVal -= 1;
-		
-		if ( self.pers["cur_death_streak"] == deathVal )
-		{
-			self thread maps\mp\perks\_perks::givePerk( loadoutDeathStreak );
-			self thread maps\mp\gametypes\_hud_message::splashNotify( loadoutDeathStreak );
-		}
-		else if ( self.pers["cur_death_streak"] > deathVal )
-		{
-			self thread maps\mp\perks\_perks::givePerk( loadoutDeathStreak );
-		}
-	}
-	
 	if(GetDvarInt("g_barebones") == 1)
 	{
 		self loadoutAllPerks( );
