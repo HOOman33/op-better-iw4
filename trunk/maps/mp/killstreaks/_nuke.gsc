@@ -12,6 +12,7 @@ init()
 	level._effect[ "nuke_player" ] = loadfx( "explosions/player_death_nuke" );
 	level._effect[ "nuke_flash" ] = loadfx( "explosions/player_death_nuke_flash" );
 	level._effect[ "nuke_aftermath" ] = loadfx( "dust/nuke_aftermath_mp" );
+	level._effect[ "nuke_leftovers" ] = loadfx ( "explosions/emp_flash_mp" );
 
 	game["strings"]["nuclear_strike"] = &"MP_TACTICAL_NUKE";
 	
@@ -103,7 +104,7 @@ doNuke( allowCancel )
 	level thread delaythread_nuke( level.nukeTimer, ::nukeEffects );
 	level thread delaythread_nuke( (level.nukeTimer + 0.25), ::nukeVision );
 	level thread delaythread_nuke( (level.nukeTimer + 1.5), ::nukeDeath );
-	level thread delaythread_nuke( (level.nukeTimer + 1.5), ::nukeEarthquake );
+	level thread delaythread_nuke( (level.nukeTimer), ::nukeEarthquake );
 	level thread nukeAftermathEffect();
 
 	if ( level.cancelMode && allowCancel )
@@ -200,6 +201,7 @@ nukeEffect( player )
 	player endon( "disconnect" );
 
 	waitframe();
+	PlayFXOnTagForClients( level._effect[ "nuke_leftovers" ], self, "tag_origin", player) ;
 	PlayFXOnTagForClients( level._effect[ "nuke_flash" ], self, "tag_origin", player );
 }
 
@@ -232,9 +234,13 @@ nukeVision()
 	level endon ( "nuke_cancelled" );
 
 	level.nukeVisionInProgress = true;
+	/*
 	visionSetNaked( "coup_sunblind", 0 );
 	wait 0.2;
 	visionSetNaked( getDvar("mapname"), 0.5 );
+	wait 0.73;
+	*/
+	wait 0.2;
 	wait 0.73;
 	foreach(player in level.players)
 	{
@@ -284,12 +290,11 @@ nukeDeath()
 
 nukeEarthquake()
 {
-	level endon ( "nuke_cancelled" );
-
-	level waittill( "nuke_death" );
-
 	// TODO: need to get a different position to call this on
-	//earthquake( 0.6, 10, nukepos, 100000 );
+	foreach(player in level.players)
+	{
+		earthquake( 0.6, 3, player.origin, 100 );
+	}
 
 	//foreach( player in level.players )
 		//player PlayRumbleOnEntity( "damage_heavy" );
