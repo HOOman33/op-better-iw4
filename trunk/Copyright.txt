@@ -22,6 +22,7 @@
 13) Add Moon gamemode. (Basically Moon gravity and physics.)
 14) Add Barebones mode. (No perks, equipment, killstreaks, and no attachments.)
 15) Fix Global Thermonuclear War.
+16) Vote Gametype/Map by banz.
 
 /----------------------------------------------------------------------------------------------------------------------------------------------/
 
