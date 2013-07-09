@@ -159,6 +159,7 @@ nukeSoundExplosion()
 
 nukeEffects()
 {
+	nukeEnt = undefined;
 	level endon ( "nuke_cancelled" );
 
 	setDvar( "ui_bomb_timer", 0 );
@@ -169,6 +170,7 @@ nukeEffects()
 
 	foreach( player in level.players )
 	{
+		nukeEnt delete();
 		playerForward = anglestoforward( player.angles );
 		playerForward = ( playerForward[0], playerForward[1], 0 );
 		playerForward = VectorNormalize( playerForward );
@@ -179,7 +181,7 @@ nukeEffects()
 		nukeEnt = Spawn( "script_model", player.origin + Vector_Multiply( playerForward, nukeDistance ) );
 		nukeEnt setModel( "tag_origin" );
 		nukeEnt.angles = ( 0, (player.angles[1] + 180), 90 );
-		level.nukepos = nukeEnt.origin;
+		level.nukepos = nukeEnt;
 
 		/#
 		if ( getDvarInt( "scr_nukeDebugPosition" ) )
@@ -189,9 +191,8 @@ nukeEffects()
 		}
 		#/
 
-		nukeEnt thread nukeEffect( player );
-		player.nuked = true;
 	}
+	level.nukepos thread nukeEffect();
 }
 
 nukeEffect( player )
@@ -201,8 +202,12 @@ nukeEffect( player )
 	player endon( "disconnect" );
 
 	waitframe();
-	PlayFXOnTagForClients( level._effect[ "nuke_leftovers" ], self, "tag_origin", player) ;
-	PlayFXOnTagForClients( level._effect[ "nuke_flash" ], self, "tag_origin", player );
+	foreach(player in level.players)
+	{
+		PlayFXOnTagForClients( level._effect[ "nuke_leftovers" ], self, "tag_origin", player) ;
+		PlayFXOnTagForClients( level._effect[ "nuke_flash" ], self, "tag_origin", player );
+		player.nuked = true;
+	}
 }
 
 nukeAftermathEffect()
@@ -271,7 +276,7 @@ nukeDeath()
 			player thread maps\mp\gametypes\_damage::finishPlayerDamageWrapper( level.nukeInfo.player, level.nukeInfo.player, 999999, 0, "MOD_EXPLOSIVE", "nuke_mp", player.origin, player.origin, "none", 0, 0 );
 	}	
 	wait 0.1;
-	PhysicsExplosionSphere( level.nukepos, 50000, 50000, 20 );
+	PhysicsExplosionSphere( level.nukepos.origin, 50000, 50000, 20 );
 
 	level.postRoundTime = 10;
 
