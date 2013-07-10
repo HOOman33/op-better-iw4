@@ -250,6 +250,8 @@ onPlayerConnect()
 		player.hud_scorePopup.line setPoint("BOTTOMCENTER", "BOTTOMCENTER", 0, -150);
 		player.hud_scorePopup.line.alpha = 0;
 		
+		player.hud_xpEventPopup = player createXpEventPopup();
+		
 		player thread onPlayerSpawned();
 		player thread onJoinedTeam();
 		player thread onJoinedSpectators();
@@ -342,6 +344,21 @@ giveRankXP( type, value )
 		case "destroy":
 		case "save":
 		case "defuse":
+		case "kill_confirmed":
+		case "kill_denied":
+		case "tags_retrieved":
+		case "team_assist":
+		case "kill_bonus":
+		case "kill_carrier":
+		case "draft_rogue":
+		case "survivor":
+		case "final_rogue":
+		case "gained_gun_rank":
+		case "dropped_enemy_gun_rank":
+		case "got_juggernaut":
+		case "kill_as_juggernaut":
+		case "kill_juggernaut":
+		case "jugg_on_jugg":
 			if ( getGametypeNumLives() > 0 )
 			{
 				multiplier = max(1,int( 10/getGametypeNumLives() ));
@@ -409,6 +426,21 @@ giveRankXP( type, value )
 		case "assault":
 		case "plant":
 		case "defuse":
+		case "kill_confirmed":
+		case "kill_denied":
+		case "tags_retrieved":
+		case "team_assist":
+		case "kill_bonus":
+		case "kill_carrier":
+		case "draft_rogue":
+		case "survivor":
+		case "final_rogue":
+		case "gained_gun_rank":
+		case "dropped_enemy_gun_rank":
+		case "got_juggernaut":
+		case "kill_as_juggernaut":
+		case "kill_juggernaut":
+		case "jugg_on_jugg":
 			self.pers["summary"]["score"] += value;
 			self.pers["summary"]["xp"] += value;
 			break;
@@ -693,4 +725,61 @@ syncXPStat()
 	xp = self getRankXP();
 	
 	self maps\mp\gametypes\_persistence::statSet( "experience", xp );
+}
+
+createXpEventPopup()
+{
+	hud_xpEventPopup = newClientHudElem( self );
+	hud_xpEventPopup.children = [];		
+	hud_xpEventPopup.horzAlign = "center";
+	hud_xpEventPopup.vertAlign = "middle";
+	hud_xpEventPopup.alignX = "center";
+	hud_xpEventPopup.alignY = "middle";
+	hud_xpEventPopup.x = 55;
+	if ( level.splitScreen )
+		hud_xpEventPopup.y = -20;
+	else
+		hud_xpEventPopup.y = -35;
+	hud_xpEventPopup.font = "hudbig";
+	hud_xpEventPopup.fontscale = 0.65;
+	hud_xpEventPopup.archived = false;
+	hud_xpEventPopup.color = (0.5,0.5,0.5);
+	hud_xpEventPopup.sort = 10000;
+	hud_xpEventPopup.elemType = "msgText";
+	hud_xpEventPopup maps\mp\gametypes\_hud::fontPulseInit( 3.0 );
+	return hud_xpEventPopup;
+}
+
+xpEventPopup( event, hudColor, glowAlpha )
+{
+	self endon( "disconnect" );
+	self endon( "joined_team" );
+	self endon( "joined_spectators" );
+
+	self notify( "xpEventPopup" );
+	self endon( "xpEventPopup" );
+
+	wait ( 0.05 );
+
+	/*if ( self.spUpdateTotal < 0 )
+		self.hud_xpEventPopup.label = &"";
+	else
+		self.hud_xpEventPopup.label = &"MP_PLUS";*/
+		
+	if ( !isDefined( hudColor ) )
+		hudColor = (1,1,0.5);
+	if ( !isDefined( glowAlpha ) )
+		glowAlpha = 0;
+
+	self.hud_xpEventPopup.color = hudColor;
+	self.hud_xpEventPopup.glowColor = hudColor;
+	self.hud_xpEventPopup.glowAlpha = glowAlpha;
+
+	self.hud_xpEventPopup setText(event);
+	self.hud_xpEventPopup.alpha = 0.85;
+
+	wait ( 1.0 );
+	
+	self.hud_xpEventPopup fadeOverTime( 0.75 );
+	self.hud_xpEventPopup.alpha = 0;	
 }

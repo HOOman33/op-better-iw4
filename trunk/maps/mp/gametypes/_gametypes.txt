@@ -16,3 +16,4 @@ ss
 onedom
 moon
 defcon
+tdef
