@@ -1,7 +1,7 @@
 /****************************************************************************************************/
 /										         /
 /				Operation Better MW2				         /
-/			© 2013 DidUknowiPwn™ & Zombiefan564/[115]Death	 All Rights Reserved	         /
+/	© 2013 DidUknowiPwn™ & Zombiefan564/[115]Death & Keouf & banz	 All Rights Reserved	         /
 /										         /
 /****************************************************************************************************/
 
@@ -23,6 +23,7 @@
 14) Add Barebones mode. (No perks, equipment, killstreaks, and no attachments.)
 15) Fix Global Thermonuclear War.
 16) Vote Gametype/Map by banz.
+17) Last Team Standing by Keouf
 
 /----------------------------------------------------------------------------------------------------------------------------------------------/
 
