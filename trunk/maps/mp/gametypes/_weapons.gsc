@@ -8,6 +8,7 @@
 #include common_scripts\utility;
 #include maps\mp\_utility;
 
+
 attachmentGroup( attachmentName )
 {
 	return tableLookup( "mp/attachmentTable.csv", 4, attachmentName, 2 );
@@ -1137,7 +1138,7 @@ watchC4AndClaymoresPickUp()
 			{
 				if( Distance( self.origin+(0,0,50), bullettrace(self.origin+(0,0,50),self.c4array[ i ].origin,true,self)["position"] ) == Distance( self.origin+(0,0,50), self.c4array[ i ].origin ) && Distance( self.origin+(0,0,50), self.c4array[ i ].origin ) < level.pickUpRange )
 				{
-					self thread setUpPickUpEquipment( i, "c4" );
+					self thread setUpPickUpEquipment( i, "c4" );			
 					self thread destroyOnDeath();
 					self notify("equipment_found");
 				}
@@ -1146,7 +1147,7 @@ watchC4AndClaymoresPickUp()
 			if ( i == level.maxPerPlayerExplosives+1 )
 				i=0;
 
-			wait 0.01;
+			wait 0.2;
 	}
 }
 
@@ -1155,6 +1156,7 @@ setUpPickUpEquipment( i, equipment )
 	self endon("death");
 	self endon("disconnect");
 	self endon("equipment_pickedUp");
+	
 	wait 0.5;
 	self setLowerMessage( self, "Press ^3[{+activate}]^7 to pick up "+equipment, undefined, 50 );
 	self thread pickUpEquipment( i, equipment );
@@ -1162,13 +1164,13 @@ setUpPickUpEquipment( i, equipment )
 	{
 		while( ( Distance( self.origin+(0,0,50), bullettrace(self.origin+(0,0,50),self.claymorearray[ i ].origin,true,self)["position"] ) == Distance( self.origin+(0,0,50), self.claymorearray[ i ].origin ) && Distance( self.origin+(0,0,50), self.claymorearray[ i ].origin ) < level.pickUpRange ) && isDefined(self.claymorearray[ i ]) )
 		{
-			wait 0.01;
+			wait 0.1;
 		}
 	} else if( equipment == "c4" )
 	{
 		while(  ( Distance( self.origin+(0,0,50), bullettrace(self.origin+(0,0,50),self.c4array[ i ].origin,true,self)["position"] ) == Distance( self.origin+(0,0,50), self.c4array[ i ].origin ) && Distance( self.origin+(0,0,50), self.c4array[ i ].origin ) < level.pickUpRange ) && isdefined( self.c4array[ i ].origin ) )
 		{
-			wait 0.01;
+			wait 0.1;
 		}
 	}
 	
@@ -1192,18 +1194,12 @@ pickUpEquipment( i, equipment )
 	{
 		self.c4array[ i ] Delete();
 	}
-	self thread playPickUpSound();
 	self clearLowerMessage( self );
 	weaponList = self GetWeaponsListAll();
 	self giveMaxAmmo( equipment+"_mp" );
+	self giveWeapon(equipment+"_mp");
+	self playLocalSound( "scavenger_pack_pickup" );
 	self thread watchC4AndClaymoresPickUp();
-}
-
-playPickUpSound()
-{
-	self PlaySound( "ammo_crate_use" );
-	wait 1;
-	self StopSounds();
 }
 
 destroyOnDeath()

@@ -560,7 +560,7 @@ scorePopup( amount, bonus, hudColor, glowAlpha )
 	self.hud_scorePopup.line.alpha = 1;
 	self.hud_scorePopup.line fadeOverTime(0.5);
 	self.hud_scorePopup SetPulseFX( 200, 12000, 600 );
-	wait 2; // Give time to process pulse FX
+	wait 2;
 
 	increment = max( int( self.bonusUpdateTotal / 20 ), 1 );
 	incrementCash = max( int( self.xpUpdateTotal / 20 ), 1 );
@@ -600,6 +600,7 @@ scorePopup( amount, bonus, hudColor, glowAlpha )
 removeRankHUD()
 {
 	self.hud_scorePopup.alpha = 0;
+	self.hud_scorePopup.line.alpha = 0;
 }
 
 getRank()
